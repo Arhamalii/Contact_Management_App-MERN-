@@ -1,18 +1,42 @@
+import axios from "axios";
 import { useFormik } from "formik";
 import React from "react";
-import { loginSchema } from "../utils/Schema";
-import { loginInitialValues } from "../utils/constant";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/auth";
+import { loginSchema } from "../../utils/Schema";
+import { loginInitialValues } from "../../utils/constant";
 
 const Login = () => {
+  const [auth, setAuth] = useAuth();
+  const Navigate = useNavigate();
+
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: loginInitialValues,
       validationSchema: loginSchema,
-      onSubmit: (values, action) => {
-        console.log(values.email);
-        action.resetForm();
+      onSubmit: async (values, action) => {
+        try {
+          const res = await axios.post("/api/auth/login", {
+            email: values.email,
+            password: values.password,
+          });
+          if (res.status === 200) {
+            toast.success(res.data.message);
+            setAuth({ ...auth, user: res.data.users, token: res.data.token });
+            localStorage.setItem(
+              "auth",
+              JSON.stringify({ token: res.data.token, users: res.data.users })
+            );
+            Navigate("/");
+            action.resetForm();
+          }
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
       },
     });
+
   return (
     <div className="bg-white py-6 sm:py-8 lg:py-12">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
@@ -48,6 +72,7 @@ const Login = () => {
                 Password
               </label>
               <input
+                type="password"
                 name="password"
                 className="input_style"
                 value={values.password}
@@ -71,11 +96,14 @@ const Login = () => {
             <div className="relative flex items-center justify-center">
               <span className="absolute inset-x-0 h-px bg-gray-300"></span>
               <span className="relative bg-white px-4 text-sm text-gray-400">
-                Log in with social
+                OR
               </span>
             </div>
 
-            <button className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">
+            <button
+              className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base"
+              onClick={() => Navigate("/register")}
+            >
               Register Now
             </button>
           </div>
