@@ -1,10 +1,14 @@
 import React from "react";
-import { Charts, ContactList } from "../components";
+import { AddIcon, Charts, ContactTable, Navbar } from "../components";
 const Home = () => {
   return (
-    <div className="grid gap-7 px-4 h-screen w-full sm:px-12 md:grid-cols-2">
-      <ContactList />
-      <Charts />
+    <div>
+      <Navbar />
+      <AddIcon />
+      <div className="w-full  px-4 sm:px-12 py-2">
+        <ContactTable />
+        <Charts />
+      </div>
     </div>
   );
 };

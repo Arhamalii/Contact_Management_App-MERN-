@@ -1,6 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 @tailwind base;
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  background: #fff;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #384152;
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -16,4 +40,8 @@
 }
 .input_style {
   @apply w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring;
+}
+
+.trans {
+  transition: display 0.5s ease-in-out;
 }
