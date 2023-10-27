@@ -8,7 +8,6 @@ const contactRow = ({
   editHandler,
   deleteHandler,
   isProfessional,
-  id,
 }) => {
   return (
     <tr className="text-gray-700">
@@ -45,7 +44,9 @@ const contactRow = ({
         </span>
       </td>
       <td className="px-4 py-3 text-sm border">
-        <button className="mr-6">Edit</button>
+        <button className="mr-6" onClick={editHandler}>
+          Edit
+        </button>
         <button onClick={deleteHandler}>Delete</button>
       </td>
     </tr>

@@ -3,30 +3,33 @@ import React from "react";
 import { useContact } from "../context/contactContext/contactState";
 import { inputData } from "../utils/constant";
 
-const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
-  const { addContact, contacts } = useContact();
+const Modal = ({ open, setOpen, onSubmit, contactId }) => {
+  const { addContact, contacts, updateContact } = useContact();
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
-      initialValues: initialValues
-        ? initialValues
-        : {
-            name: "",
-            phone: "",
-            email: "",
-            id: contacts.length + 1,
-          },
+      initialValues: {
+        name: "",
+        phone: "",
+        email: "",
+        id: 1,
+      },
       onSubmit: (values, action) => {
-        onSubmit(values);
+        console.log(contactId);
+        console.log(values);
         setOpen(false);
         action.resetForm();
       },
     });
+
+  const updateHanlder = () => {
+    updateContact(values, contactId);
+  };
   return (
     <>
       <div
         className={` ${
           open ? "block" : "hidden"
-        }  absolute top-0 w-full h-screen z-10 bg_modal `}
+        }  absolute top-0 w-full h-full z-10 bg_modal`}
       >
         <div
           tabIndex="-1"
@@ -60,7 +63,7 @@ const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
               </button>
               <div className="px-6 py-6 lg:px-8">
                 <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                  {!edit ? "Add New Contact" : "Edit Contact"}
+                  Edit Contact
                 </h3>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   {inputData.map((inp) => {
@@ -87,8 +90,9 @@ const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
                   <button
                     type="submit"
                     className="w-full text-white bg-slate-600 hover:bg-hoverSecondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
+                    onClick={updateHanlder}
                   >
-                    {!edit ? "Create" : "Update"}
+                    Update
                   </button>
                 </form>
               </div>

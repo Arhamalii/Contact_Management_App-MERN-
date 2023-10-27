@@ -21,7 +21,7 @@ const ContactState = ({ children }) => {
       {
         id: 3,
         name: "Asil",
-        phone: "000-222-111",
+        phone: "03150804785",
         email: "asil@gmail.com",
         relationship: "personal",
       },
@@ -37,10 +37,10 @@ const ContactState = ({ children }) => {
     });
   };
 
-  const updateContact = (data) => {
+  const updateContact = (data, id) => {
     dispatch({
       type: "UPDATE_CONTACT",
-      payload: data,
+      payload: { data, id },
     });
   };
   const deleteContact = (id) => {

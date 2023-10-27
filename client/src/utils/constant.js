@@ -8,3 +8,17 @@ export const registerInitialValues = {
   email: "",
   password: "",
 };
+export const inputData = [
+  {
+    name: "name",
+    type: "text",
+  },
+  {
+    name: "phone",
+    type: "text",
+  },
+  {
+    name: "email",
+    type: "email",
+  },
+];
