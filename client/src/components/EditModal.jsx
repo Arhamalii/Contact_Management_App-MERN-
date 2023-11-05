@@ -3,27 +3,23 @@ import React from "react";
 import { useContact } from "../context/contactContext/contactState";
 import { inputData } from "../utils/constant";
 
-const Modal = ({ open, setOpen, onSubmit, contactId }) => {
-  const { addContact, contacts, updateContact } = useContact();
+const Modal = ({ open, setOpen, onSubmit, contact }) => {
+  const { updateContact } = useContact();
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
         name: "",
         phone: "",
         email: "",
-        id: 1,
       },
       onSubmit: (values, action) => {
-        console.log(contactId);
-        console.log(values);
+        updateContact(values, contact.id);
         setOpen(false);
         action.resetForm();
       },
     });
 
-  const updateHanlder = () => {
-    updateContact(values, contactId);
-  };
+  // const updateHanlder = () => {};
   return (
     <>
       <div
@@ -90,7 +86,7 @@ const Modal = ({ open, setOpen, onSubmit, contactId }) => {
                   <button
                     type="submit"
                     className="w-full text-white bg-slate-600 hover:bg-hoverSecondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
-                    onClick={updateHanlder}
+                    onSubmit={handleSubmit}
                   >
                     Update
                   </button>

@@ -10,7 +10,7 @@ const isLogin = require("../middlewares/auth");
 const router = express.Router();
 
 router.post("/", contactValidation, isLogin, createContactController);
-router.get("/", contactValidation, isLogin, getAllContacts);
+router.get("/", isLogin, getAllContacts);
 router.put("/:id", isLogin, updateContactController);
 router.delete("/:id", isLogin, deleteContactController);
 

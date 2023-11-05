@@ -3,20 +3,19 @@ import React from "react";
 import { useContact } from "../context/contactContext/contactState";
 import { inputData } from "../utils/constant";
 
-const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
+const Modal = ({ open, setOpen, onSubmit, edit }) => {
   const { addContact, contacts } = useContact();
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
-      initialValues: initialValues
-        ? initialValues
-        : {
-            name: "",
-            phone: "",
-            email: "",
-            id: contacts.length + 1,
-          },
+      initialValues: {
+        name: "",
+        phone: "",
+        email: "",
+        id: contacts.length + 1,
+      },
       onSubmit: (values, action) => {
-        onSubmit(values);
+        console.log(values);
+        addContact(values);
         setOpen(false);
         action.resetForm();
       },
@@ -34,8 +33,8 @@ const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
           className="fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center  "
         >
           <div className="relative w-full max-w-md max-h-full shadow-xl ">
-            {/* <!-- Modal content --> */}
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              {/* <!-- Modal content --> */}
               <button
                 type="button"
                 className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -88,7 +87,7 @@ const Modal = ({ open, setOpen, initialValues, onSubmit, edit }) => {
                     type="submit"
                     className="w-full text-white bg-slate-600 hover:bg-hoverSecondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
                   >
-                    {!edit ? "Create" : "Update"}
+                    Create2
                   </button>
                 </form>
               </div>

@@ -1,14 +1,29 @@
-import React, { useState } from "react";
-import { useContact } from "../context/contactContext/contactState";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/auth";
 import { ContactRow, EditModal } from "./";
 const ContactTable = () => {
-  const { deleteContact, contacts, updateContact } = useContact();
+  const [contact, setcontact] = useState(null);
+  const [auth] = useAuth();
+
+  const getAllContacts = async () => {
+    const res = await axios.get("/api/contacts");
+    // if (res.data.success) {
+    console.log(res.data);
+    setcontact(res.data.allContacts);
+    // }
+  };
+
+  useEffect(() => {
+    if (auth.token) {
+      getAllContacts();
+    }
+  }, [auth.token]);
 
   const [editModal, setEditModal] = useState(false);
-  const [id, setId] = useState(null);
-  const editHandler = (id) => {
-    setEditModal(true);
-    setId(id);
+  const [editContact, setEditContact] = useState(null);
+  const editHandler = (contact) => {
+    setEditContact(contact);
   };
   return (
     <>
@@ -25,7 +40,7 @@ const ContactTable = () => {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {contacts?.map((contact, index) => (
+                {contact?.map((contact, index) => (
                   <ContactRow
                     key={index}
                     contactName={contact.name}
@@ -34,7 +49,7 @@ const ContactTable = () => {
                     contactRole={contact.relationship}
                     deleteHandler={() => deleteContact(contact.id)}
                     // editHandler={() => updateContact(contact.id) }
-                    editHandler={() => editHandler(contact.id)}
+                    editHandler={() => editHandler(contact)}
                   />
                 ))}
               </tbody>
@@ -42,7 +57,11 @@ const ContactTable = () => {
           </div>
         </div>
       </section>
-      <EditModal open={editModal} setOpen={setEditModal} contactId={id} />
+      <EditModal
+        open={editModal}
+        setOpen={setEditModal}
+        contact={setEditContact}
+      />
     </>
   );
 };

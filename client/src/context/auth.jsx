@@ -8,6 +8,7 @@ const AuthProvider = ({ children }) => {
     user: null,
     token: "",
   });
+
   axios.defaults.headers.common["Authorization"] = auth?.token;
   useEffect(() => {
     const data = localStorage.getItem("auth");
@@ -19,6 +20,7 @@ const AuthProvider = ({ children }) => {
         token: parseData.token,
       });
     }
+
     //eslint-disable-next-line
   }, []);
   return (
@@ -31,4 +33,4 @@ const AuthProvider = ({ children }) => {
 //custom hook
 const useAuth = () => useContext(AuthContext);
 
-export { AuthContext, AuthProvider, useAuth };
+export { AuthProvider, useAuth };

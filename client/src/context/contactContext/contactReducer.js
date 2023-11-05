@@ -3,15 +3,16 @@ const reducer = (state, action) => {
     case "ADD_CONTACT":
       return { ...state, contacts: [action.payload, ...state.contacts] };
 
-    // case "UPDATE_CONTACT":
-    //   return {
-    //     ...state,
-    //     contacts: state.contacts.map((c) => {
-    //       if (c.id === action.payload.id) {
-    //         return c : action.payload.data;
-    //       }
-    //     }),
-    //   };
+    case "UPDATE_CONTACT":
+      return {
+        ...state,
+        contacts: state.contacts.map((data) => {
+          if (data.id === action.payload.id) {
+            return action.payload.data;
+          }
+          return data;
+        }),
+      };
 
     case "DELETE_CONTACT":
       return {
