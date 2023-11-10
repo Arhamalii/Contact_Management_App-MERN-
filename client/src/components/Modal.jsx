@@ -1,25 +1,32 @@
 import { useFormik } from "formik";
 import React from "react";
-import { useContact } from "../context/contactContext/contactState";
+import { useContact } from "../context/contactContext/state";
+import { createContactValidation } from "../utils/Schema";
 import { inputData } from "../utils/constant";
-
 const Modal = ({ open, setOpen, onSubmit, edit }) => {
-  const { addContact, contacts } = useContact();
+  const { createContact, setContacts } = useContact();
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
         name: "",
         phone: "",
         email: "",
-        id: contacts.length + 1,
+        relation: "personal",
       },
-      onSubmit: (values, action) => {
+      validationSchema: createContactValidation,
+
+      onSubmit: async (values, action) => {
         console.log(values);
-        addContact(values);
-        setOpen(false);
-        action.resetForm();
+
+        const success = await createContact(values);
+        if (success) {
+          setContacts();
+          setOpen(false);
+          action.resetForm();
+        }
       },
     });
+
   return (
     <>
       <div
@@ -78,16 +85,41 @@ const Modal = ({ open, setOpen, onSubmit, edit }) => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                          // placeholder="name@company.com"
                         />
+                        {touched[inp.name] && errors[inp.name] ? (
+                          <small className="text-red-600">
+                            {errors[inp.name]}
+                          </small>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     );
                   })}
+                  <div>
+                    <label
+                      htmlFor="role"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Contact Relation
+                    </label>
+                    <select
+                      name={"relation"}
+                      value={values.relation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mt-[0px]"
+                    >
+                      <option value="personal">Personal</option>
+                      <option value="professional">Professional</option>
+                    </select>
+                  </div>
+
                   <button
                     type="submit"
                     className="w-full text-white bg-slate-600 hover:bg-hoverSecondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
                   >
-                    Create2
+                    Create
                   </button>
                 </form>
               </div>

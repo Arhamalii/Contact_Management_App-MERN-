@@ -35,9 +35,9 @@ const contactRow = ({
       <td className="px-4 py-3 text-xs border">
         <span
           className={`px-2 py-1 font-semibold leading-tight rounded-sm ${
-            !isProfessional
+            contactRole !== "professional"
               ? "text-green-700 bg-green-100"
-              : "text-orange-700 bg-gray-100"
+              : "text-sky-600 bg-gray-100"
           } `}
         >
           {contactRole}

@@ -25,6 +25,7 @@ const Navbar = () => {
             className="rounded-full pb-4 "
             onClick={dropdownHandler}
           />
+
           <div
             className={`flex-col items-start bg-slate-400 w-24 rounded-md text-white  px-2 fixed cursor-pointer overflow-hidden transition-max-height duration-700 ${
               showDropdown ? "max-h-20" : "max-h-0"

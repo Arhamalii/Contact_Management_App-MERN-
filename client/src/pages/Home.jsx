@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { AddIcon, Charts, ContactTable, Modal, Navbar } from "../components";
+import {
+  AddIcon,
+  Charts,
+  ContactTable,
+  EditModal,
+  Modal,
+  Navbar,
+} from "../components";
 const Home = () => {
   const [open, setOpen] = useState(false);
   const modalHandler = () => {
@@ -11,6 +18,7 @@ const Home = () => {
       <Navbar />
       <AddIcon click={modalHandler} />
       <Modal open={open} setOpen={setOpen} />
+      <EditModal open={open} setOpen={setOpen} />
       <div className="w-full  px-4 sm:px-12 py-2">
         <ContactTable />
         <Charts />

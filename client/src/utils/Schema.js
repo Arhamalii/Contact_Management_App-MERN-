@@ -16,3 +16,8 @@ export const registerSchema = yup.object({
     .required("Please Enter Your Email"),
   password: yup.string().min(6).max(20).required("Please Enter your Password "),
 });
+
+export const createContactValidation = yup.object({
+  name: yup.string().required("Contact Name is Required"),
+  phone: yup.number().required("Contact Number is Required"),
+});

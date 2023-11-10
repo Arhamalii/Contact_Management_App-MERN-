@@ -1,30 +1,43 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import Swal from "sweetalert2";
 import { useAuth } from "../context/auth";
-import { ContactRow, EditModal } from "./";
+import { useContact } from "../context/contactContext/state";
+import { ContactRow } from "./";
 const ContactTable = () => {
-  const [contact, setcontact] = useState(null);
   const [auth] = useAuth();
-
-  const getAllContacts = async () => {
-    const res = await axios.get("/api/contacts");
-    // if (res.data.success) {
-    console.log(res.data);
-    setcontact(res.data.allContacts);
-    // }
-  };
+  const { setContacts, contacts, updateIdSetter, deleteConatact } =
+    useContact();
 
   useEffect(() => {
     if (auth.token) {
-      getAllContacts();
+      setContacts();
     }
   }, [auth.token]);
 
-  const [editModal, setEditModal] = useState(false);
-  const [editContact, setEditContact] = useState(null);
-  const editHandler = (contact) => {
-    setEditContact(contact);
+  // delete confirm
+  const deleteConfirmHandler = (id) => {
+    Swal.fire({
+      title: "Are you sure to delete it?",
+      icon: "error",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#384152",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteConatact(id);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Contact has been deleted.",
+          icon: "success",
+          confirmButtonColor: "#384152",
+        });
+      } else if (result.isDenied) {
+        Swal.fire("Deactivation Cancelled!!", "", "error");
+      }
+    });
   };
+
   return (
     <>
       <section className="container mx-auto p-6 font-mono ">
@@ -40,16 +53,15 @@ const ContactTable = () => {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {contact?.map((contact, index) => (
+                {contacts?.map((contact, index) => (
                   <ContactRow
                     key={index}
                     contactName={contact.name}
                     contactPhone={contact.phone}
                     contactEmail={contact.email}
-                    contactRole={contact.relationship}
-                    deleteHandler={() => deleteContact(contact.id)}
-                    // editHandler={() => updateContact(contact.id) }
-                    editHandler={() => editHandler(contact)}
+                    contactRole={contact.relation}
+                    deleteHandler={() => deleteConfirmHandler(contact._id)}
+                    editHandler={() => updateIdSetter(contact._id)}
                   />
                 ))}
               </tbody>
@@ -57,11 +69,6 @@ const ContactTable = () => {
           </div>
         </div>
       </section>
-      <EditModal
-        open={editModal}
-        setOpen={setEditModal}
-        contact={setEditContact}
-      />
     </>
   );
 };

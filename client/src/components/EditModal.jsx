@@ -1,25 +1,32 @@
 import { useFormik } from "formik";
-import React from "react";
-import { useContact } from "../context/contactContext/contactState";
+import React, { useEffect, useState } from "react";
+import { useContact } from "../context/contactContext/state";
 import { inputData } from "../utils/constant";
 
-const Modal = ({ open, setOpen, onSubmit, contact }) => {
-  const { updateContact } = useContact();
+const Modal = () => {
+  const [open, setOpen] = useState(false);
+  const { editId, updateCoantact } = useContact();
+
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
         name: "",
         phone: "",
         email: "",
+        relation: "personal",
       },
       onSubmit: (values, action) => {
-        updateContact(values, contact.id);
+        console.log(values);
+        updateCoantact(values, editId);
         setOpen(false);
         action.resetForm();
       },
     });
 
-  // const updateHanlder = () => {};
+  useEffect(() => {
+    editId && setOpen(true);
+  }, [editId]);
+
   return (
     <>
       <div
@@ -39,7 +46,7 @@ const Modal = ({ open, setOpen, onSubmit, contact }) => {
                 type="button"
                 className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-hide="authentication-modal"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen(false)}
               >
                 <svg
                   className="w-3 h-3"
@@ -83,6 +90,26 @@ const Modal = ({ open, setOpen, onSubmit, contact }) => {
                       </div>
                     );
                   })}
+
+                  <div>
+                    <label
+                      htmlFor="role"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Contact Relation
+                    </label>
+                    <select
+                      name={"relation"}
+                      value={values.relation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mt-[0px]"
+                    >
+                      <option value="personal">Personal</option>
+                      <option value="professional">Professional</option>
+                    </select>
+                  </div>
+
                   <button
                     type="submit"
                     className="w-full text-white bg-slate-600 hover:bg-hoverSecondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
