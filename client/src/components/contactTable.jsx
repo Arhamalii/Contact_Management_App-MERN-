@@ -5,7 +5,7 @@ import { useContact } from "../context/contactContext/state";
 import { ContactRow } from "./";
 const ContactTable = () => {
   const [auth] = useAuth();
-  const { setContacts, contacts, updateIdSetter, deleteConatact } =
+  const { setContacts, contacts, updateConatctSetter, deleteConatact } =
     useContact();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ContactTable = () => {
                     contactEmail={contact.email}
                     contactRole={contact.relation}
                     deleteHandler={() => deleteConfirmHandler(contact._id)}
-                    editHandler={() => updateIdSetter(contact._id)}
+                    editHandler={() => updateConatctSetter(contact._id)}
                   />
                 ))}
               </tbody>

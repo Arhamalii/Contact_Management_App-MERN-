@@ -1,11 +1,24 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../src/context/auth";
 import head from "../assets/head2.jpg";
 import logo from "../assets/logo.png";
-
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const [auth, setAuth] = useAuth();
+  const Navigate = useNavigate();
+  // dropdown Handler
   const dropdownHandler = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  // handle logout
+  const handleLogout = () => {
+    setAuth({ ...auth, user: null, token: "" });
+    console.warn("logout");
+    localStorage.removeItem("auth");
+    Navigate("/login");
   };
 
   return (
@@ -34,7 +47,11 @@ const Navbar = () => {
             <option value="profile" className="pt-2 pb-[0.40rem]">
               My Profile
             </option>
-            <option value="logout" className="pt-[0.40rem] pb-2">
+            <option
+              value="logout"
+              className="pt-[0.40rem] pb-2"
+              onClick={handleLogout}
+            >
               Logout
             </option>
           </div>

@@ -5,7 +5,7 @@ import { inputData } from "../utils/constant";
 
 const Modal = () => {
   const [open, setOpen] = useState(false);
-  const { editId, updateCoantact } = useContact();
+  const { updateContactState, updateCoantact } = useContact();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
@@ -13,20 +13,30 @@ const Modal = () => {
         name: "",
         phone: "",
         email: "",
-        relation: "personal",
+        relation: "",
       },
       onSubmit: (values, action) => {
         console.log(values);
-        updateCoantact(values, editId);
+        updateCoantact(values, updateContactState._id);
         setOpen(false);
         action.resetForm();
       },
     });
 
   useEffect(() => {
-    editId && setOpen(true);
-  }, [editId]);
+    updateContactState && setOpen(true);
+    console.info(updateContactState);
+  }, [updateContactState]);
 
+  useEffect(() => {
+    if (updateContactState) {
+      // Set form values here once the data is available
+      values.name = updateContactState.name || "";
+      values.phone = updateContactState.phone || "";
+      values.email = updateContactState.email || "";
+      values.relation = updateContactState.relation || "";
+    }
+  }, [updateContactState]);
   return (
     <>
       <div

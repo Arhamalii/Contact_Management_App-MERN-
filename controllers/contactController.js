@@ -19,6 +19,24 @@ const getAllContacts = async (req, res) => {
   }
 };
 
+const getContactById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const contact = await Contacts.find({ user_id: req.user.id, id });
+    res.status(200).send({
+      succeess: true,
+      message: "Contact Fetched Succesfully",
+      contact,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
 const createContactController = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -143,4 +161,5 @@ module.exports = {
   getAllContacts,
   updateContactController,
   deleteContactController,
+  getContactById,
 };

@@ -8,7 +8,7 @@ import reducer from "./reducer";
 const ContactState = ({ children }) => {
   const initialState = {
     contacts: [],
-    editId: null,
+    updateContactState: null,
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -43,24 +43,28 @@ const ContactState = ({ children }) => {
           icon: "success",
           confirmButtonColor: "#384152",
         });
-        updateIdRemover();
+        // updateContactRemover();
       }
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
-  const updateIdSetter = async (id) => {
+  const updateConatctSetter = async (id) => {
+    // dispatch({
+    //   type: "SET_CONTACT_ID",
+    //   payload: id,
+    // });
     dispatch({
-      type: "SET_CONTACT_ID",
+      type: "SET_UPDATE_CONTACT",
       payload: id,
     });
   };
+  // const updateContactRemover = () => {
+  //   dispatch({
+  //     type: "REMOVE_UPDATE_CONTACT",
+  //   });
+  // };
 
-  const updateIdRemover = () => {
-    dispatch({
-      type: "REMOVE_CONTACT_ID",
-    });
-  };
   const deleteConatact = async (id) => {
     try {
       const res = await axios.delete(`/api/contacts/${id}`);
@@ -89,12 +93,12 @@ const ContactState = ({ children }) => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
-        editId: state.editId,
+        updateContactState: state.updateContactState,
         setContacts,
         createContact,
         updateCoantact,
         deleteConatact,
-        updateIdSetter,
+        updateConatctSetter,
       }}
     >
       {children}
