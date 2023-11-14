@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useAuth } from "../context/auth";
 import { useContact } from "../context/contactContext/state";
 import { ContactRow } from "./";
+
 const ContactTable = () => {
   const [auth] = useAuth();
   const { setContacts, contacts, updateConatctSetter, deleteConatact } =
@@ -39,8 +40,27 @@ const ContactTable = () => {
   };
 
   return (
-    <>
-      <section className="container mx-auto p-6 font-mono ">
+    <div className="overflow-x-auto">
+      <section className="container mx-auto font-mono min-w-[600px] ">
+        {/* <div className="w-full py-2 px-2 rounded-xl flex justify-between items-center bg-[#F3F4F6]">
+          <div className="flex items-center">
+            <input
+              name="search"
+              type="text"
+              placeholder="Search here"
+              className="border-2 border-secondary rounded-md py-1 px-2 focus:outline-none focus:border-primary transition duration-300"
+            />
+          </div>
+          <select
+            name="roleFilter"
+            id="roleFilter"
+            className="border-2 border-secondary rounded-md py-1 px-2 focus:outline-none focus:border-primary transition duration-300 bg-white text-gray-800"
+          >
+            <option value="">All Roles</option>
+            <option value="role1">Role 1</option>
+            <option value="role2">Role 2</option>
+          </select>
+        </div> */}
         <div className="w-full mb-8  rounded-lg shadow-lg max-h-[47vh] overflow-y-scroll">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
@@ -69,7 +89,7 @@ const ContactTable = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

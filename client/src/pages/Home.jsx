@@ -19,7 +19,7 @@ const Home = () => {
       <AddIcon click={modalHandler} />
       <Modal open={open} setOpen={setOpen} />
       <EditModal open={open} setOpen={setOpen} />
-      <div className="w-full  px-4 sm:px-12 py-2">
+      <div className="w-full  px-4 sm:px-12 py-8 sm:py-12">
         <ContactTable />
         <Charts />
       </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import Avatar from "react-avatar";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../src/context/auth";
-import head from "../assets/head2.jpg";
 import logo from "../assets/logo.png";
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,7 +17,7 @@ const Navbar = () => {
   // handle logout
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
-    console.warn("logout");
+    toast.success("Logout Successfully");
     localStorage.removeItem("auth");
     Navigate("/login");
   };
@@ -32,13 +33,15 @@ const Navbar = () => {
           onMouseEnter={dropdownHandler}
           onMouseLeave={dropdownHandler}
         >
-          <img
-            src={head}
-            alt="profile"
-            className="rounded-full pb-4 "
+          <Avatar
+            name={auth?.user?.name?.charAt(0)}
+            size="34"
+            round={true}
+            className="bg-secondary"
             onClick={dropdownHandler}
+            color="#5A6872 "
           />
-
+          {console.warn(auth.user.name)}
           <div
             className={`flex-col items-start bg-slate-400 w-24 rounded-md text-white  px-2 fixed cursor-pointer overflow-hidden transition-max-height duration-700 ${
               showDropdown ? "max-h-20" : "max-h-0"

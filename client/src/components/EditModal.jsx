@@ -5,7 +5,7 @@ import { inputData } from "../utils/constant";
 
 const Modal = () => {
   const [open, setOpen] = useState(false);
-  const { updateContactState, updateCoantact } = useContact();
+  const { updateContactState, updateCoantact ,updateCoantactRemover } = useContact();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
@@ -22,10 +22,13 @@ const Modal = () => {
         action.resetForm();
       },
     });
+    const modalCloseHandler = ()=>{
+      setOpen(false)
+      updateCoantactRemover()
+    }
 
   useEffect(() => {
     updateContactState && setOpen(true);
-    console.info(updateContactState);
   }, [updateContactState]);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const Modal = () => {
                 type="button"
                 className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-hide="authentication-modal"
-                onClick={() => setOpen(false)}
+                onClick={modalCloseHandler}
               >
                 <svg
                   className="w-3 h-3"

@@ -11,6 +11,8 @@ const reducer = (state, action) => {
         (d) => d._id === action.payload
       );
       return { ...state, updateContactState: filteredContact[0] };
+    case "REMOVE_UPDATE_CONTACT":
+      return { ...state, updateContactState: null };
 
     default:
       return state;

@@ -22,3 +22,26 @@ export const inputData = [
     type: "email",
   },
 ];
+
+export const color = () => {
+  const random = [
+    "Gray",
+    "Blue",
+    "Green",
+    "Purple",
+    "Pink",
+    "Brown",
+    "Teal",
+    "Navy",
+    "Coral",
+    "Salmon",
+    "Peach",
+    "Turquoise",
+    "Lilac",
+    "Periwinkle",
+  ];
+
+  const randomIndex = Math.floor(Math.random() * random.length);
+  const randomColor = random[randomIndex];
+  return randomColor;
+};

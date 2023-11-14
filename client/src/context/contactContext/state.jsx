@@ -43,17 +43,13 @@ const ContactState = ({ children }) => {
           icon: "success",
           confirmButtonColor: "#384152",
         });
-        // updateContactRemover();
+        updateCoantactRemover();
       }
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
   const updateConatctSetter = async (id) => {
-    // dispatch({
-    //   type: "SET_CONTACT_ID",
-    //   payload: id,
-    // });
     dispatch({
       type: "SET_UPDATE_CONTACT",
       payload: id,
@@ -65,6 +61,11 @@ const ContactState = ({ children }) => {
   //   });
   // };
 
+  const updateCoantactRemover = () => {
+    dispatch({
+      type: "REMOVE_UPDATE_CONTACT",
+    });
+  };
   const deleteConatact = async (id) => {
     try {
       const res = await axios.delete(`/api/contacts/${id}`);
@@ -99,6 +100,7 @@ const ContactState = ({ children }) => {
         updateCoantact,
         deleteConatact,
         updateConatctSetter,
+        updateCoantactRemover,
       }}
     >
       {children}
