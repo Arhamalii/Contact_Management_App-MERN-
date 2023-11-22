@@ -48,11 +48,18 @@ const createContactController = async (req, res) => {
     }
     const { name, email, phone, relation } = req.body;
 
-    const alreadyContact = await Contacts.findOne({ name });
-    if (alreadyContact) {
+    const namedContact = await Contacts.findOne({ name });
+    const phonedContact = await Contacts.findOne({ phone });
+    if (namedContact) {
       return res.status(400).json({
         succeess: false,
-        message: "Contact with this Name already Exists",
+        message: "Duplicate Contact Name",
+      });
+    }
+    if (phonedContact) {
+      return res.status(400).json({
+        succeess: false,
+        message: "Duplicate Contact Number",
       });
     }
     const newContact = new Contacts({
@@ -109,6 +116,21 @@ const updateContactController = async (req, res) => {
   if (relation) contactFields.relation = relation;
 
   try {
+    const namedContact = await Contacts.findOne({ name, _id: { $ne: id } });
+    const phonedContact = await Contacts.findOne({ phone, _id: { $ne: id } });
+    if (namedContact) {
+      return res.status(400).json({
+        succeess: false,
+        message: "Duplicate Contact Name",
+      });
+    }
+    if (phonedContact) {
+      return res.status(400).json({
+        succeess: false,
+        message: "Duplicate Contact Number",
+      });
+    }
+
     const updatedContact = await Contacts.findByIdAndUpdate(id, contactFields, {
       new: true,
     });

@@ -5,14 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../src/context/auth";
 import logo from "../assets/logo.png";
 const Navbar = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [auth, setAuth] = useAuth();
   const Navigate = useNavigate();
-  // dropdown Handler
-  const dropdownHandler = () => {
-    setShowDropdown(!showDropdown);
-  };
 
   // handle logout
   const handleLogout = () => {
@@ -22,42 +18,56 @@ const Navbar = () => {
     Navigate("/login");
   };
 
+  const toggleDropdown = () => {
+    setOpen(!open);
+  };
   return (
     <nav className="px-2 sm:px-9 md:px-16 lg:px-20 xl:px-24 py-3 sticky shadow-lg">
       <div className="flex justify-between items-center">
         <div className="w-32">
           <img src={logo} alt="logo" />
         </div>
-        <div
-          className="w-10 rounded-full relative"
-          onMouseEnter={dropdownHandler}
-          onMouseLeave={dropdownHandler}
-        >
+        <div className="w-10 rounded-full relative cursor-pointer">
           <Avatar
             name={auth?.user?.name?.charAt(0)}
             size="34"
             round={true}
             className="bg-secondary"
-            onClick={dropdownHandler}
+            onClick={toggleDropdown}
             color="#5A6872 "
           />
           {console.warn(auth.user.name)}
-          <div
-            className={`flex-col items-start bg-slate-400 w-24 rounded-md text-white  px-2 fixed cursor-pointer overflow-hidden transition-max-height duration-700 ${
-              showDropdown ? "max-h-20" : "max-h-0"
-            } `}
-          >
-            <option value="profile" className="pt-2 pb-[0.40rem]">
-              My Profile
-            </option>
-            <option
-              value="logout"
-              className="pt-[0.40rem] pb-2"
-              onClick={handleLogout}
-            >
-              Logout
-            </option>
-          </div>
+
+          {open && (
+            <div className="absolute w-40 px-5 py-3 dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5 right-[-60px]">
+              <ul className="space-y-3 dark:text-white">
+                <li className="font-medium" onClick={handleLogout}>
+                  <a
+                    href="#"
+                    className="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-red-600"
+                  >
+                    <div className="mr-3 text-red-600">
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        ></path>
+                      </svg>
+                    </div>
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </nav>

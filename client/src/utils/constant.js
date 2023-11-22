@@ -35,13 +35,27 @@ export const color = () => {
     "Navy",
     "Coral",
     "Salmon",
-    "Peach",
     "Turquoise",
-    "Lilac",
-    "Periwinkle",
+    "lightslategrey",
+    "palegreen",
   ];
 
   const randomIndex = Math.floor(Math.random() * random.length);
   const randomColor = random[randomIndex];
   return randomColor;
 };
+
+export const btn = [
+  {
+    btnText: "View All",
+    btnValue: "all",
+  },
+  {
+    btnText: "Personal",
+    btnValue: "personal",
+  },
+  {
+    btnText: "Professional",
+    btnValue: "professional",
+  },
+];

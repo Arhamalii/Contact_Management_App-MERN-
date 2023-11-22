@@ -1,7 +1,8 @@
 import React from "react";
 import Avatar from "react-avatar";
-import { color } from "../utils/constant";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
+import { color } from "../utils/constant";
 const contactRow = ({
   contactName,
   contactEmail,
@@ -17,7 +18,7 @@ const contactRow = ({
         <div className="flex items-center text-sm">
           <div className="relative w-8 h-8 mr-3 rounded-full md:block">
             <Avatar
-              name={contactName.charAt(0)}
+              name={contactName?.charAt(0)}
               size="34"
               round={true}
               color={color()}
@@ -46,10 +47,12 @@ const contactRow = ({
         </span>
       </td>
       <td className="px-4 py-3 text-sm border">
-        <button className="mr-6" onClick={editHandler}>
-          Edit
+        <button className="mr-3" onClick={editHandler}>
+          <FaEdit size={"17px"} />
         </button>
-        <button onClick={deleteHandler}>Delete</button>
+        <button className="mr-3 text-red-600" onClick={deleteHandler}>
+          <FaTrashAlt size={"17px"} />
+        </button>
       </td>
     </tr>
   );

@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.png";
 import { registerSchema } from "../../utils/Schema";
 import { registerInitialValues } from "../../utils/constant";
 const Register = () => {
@@ -32,11 +33,9 @@ const Register = () => {
     });
 
   return (
-    <div className="bg-white py-6 sm:py-8 lg:py-12">
+    <div className="bg-white py-6 sm:py-8 lg:py-10">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-8 lg:text-3xl">
-          Register Form
-        </h2>
+        <img src={logo} alt="logo" className="w-48 mx-auto mb-8" />
 
         <form
           className="mx-auto max-w-lg rounded-lg border"
@@ -112,7 +111,7 @@ const Register = () => {
             </div>
 
             <button
-              className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base"
+              className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-secondary outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base"
               onClick={() => Navigate("/login")}
             >
               Login Now

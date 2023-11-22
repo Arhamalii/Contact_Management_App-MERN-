@@ -19,5 +19,12 @@ export const registerSchema = yup.object({
 
 export const createContactValidation = yup.object({
   name: yup.string().required("Contact Name is Required"),
-  phone: yup.number().required("Contact Number is Required"),
+  phone: yup
+    .number()
+    .required("Contact Number is Required")
+    .test(
+      "len",
+      "Phone number must be exactly 11 digits",
+      (val) => val && val.toString().length === 10
+    ),
 });

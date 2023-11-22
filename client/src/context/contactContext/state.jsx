@@ -7,14 +7,49 @@ import reducer from "./reducer";
 
 const ContactState = ({ children }) => {
   const initialState = {
-    contacts: [],
+    contacts: [
+      {
+        name: "Arham",
+        relation: "personal",
+        phone: "03250804785",
+        id: 1,
+      },
+      {
+        name: "Arham",
+        relation: "personal",
+        phone: "03250804785",
+        id: 1,
+      },
+      {
+        name: "Baghi",
+        relation: "personal",
+        phone: "03250804785",
+        id: 1,
+      },
+      {
+        name: "Shafwew",
+        relation: "personal",
+        phone: "03250804785",
+        id: 1,
+      },
+      {
+        name: "Zubado",
+        relation: "personal",
+        phone: "03250804785",
+        id: 1,
+      },
+    ],
     updateContactState: null,
+    relation: {
+      personal: null,
+      professional: null,
+    },
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // action creaters
 
-  const setContacts = async () => {
+  const setContacts = async (checkFilters, defaultFilter) => {
     try {
       const res = await axios.get("/api/contacts");
       if (res.data.succeess) {
@@ -26,6 +61,19 @@ const ContactState = ({ children }) => {
           type: "SET_CONTACT",
           payload: res.data.allContacts,
         });
+
+        setRelContacts();
+        if (defaultFilter) {
+          localStorage.setItem("filter", "all");
+        }
+        if (checkFilters) {
+          const prevFilter = localStorage.getItem("filter");
+          if (!prevFilter) {
+            localStorage.setItem("filter", "all");
+          }
+          prevFilter === "personal" && filterPersonal(true);
+          prevFilter === "professional" && filterProfessional(true);
+        }
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -36,7 +84,7 @@ const ContactState = ({ children }) => {
     try {
       const res = await axios.put(`/api/contacts/${id}`, payload);
       if (res.data.succeess) {
-        setContacts();
+        setContacts(true);
         Swal.fire({
           title: "Upadted!",
           text: "Contact has been upadted.",
@@ -44,6 +92,7 @@ const ContactState = ({ children }) => {
           confirmButtonColor: "#384152",
         });
         updateCoantactRemover();
+        return true;
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -55,12 +104,6 @@ const ContactState = ({ children }) => {
       payload: id,
     });
   };
-  // const updateContactRemover = () => {
-  //   dispatch({
-  //     type: "REMOVE_UPDATE_CONTACT",
-  //   });
-  // };
-
   const updateCoantactRemover = () => {
     dispatch({
       type: "REMOVE_UPDATE_CONTACT",
@@ -70,7 +113,7 @@ const ContactState = ({ children }) => {
     try {
       const res = await axios.delete(`/api/contacts/${id}`);
       if (res.data.success) {
-        setContacts();
+        setContacts(true);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -82,7 +125,7 @@ const ContactState = ({ children }) => {
       const res = await axios.post("/api/contacts", payload);
       if (res.data.success) {
         toast.success(res.data.message);
-        setContacts();
+        setContacts(true);
         return true;
       }
     } catch (error) {
@@ -90,17 +133,46 @@ const ContactState = ({ children }) => {
       return false;
     }
   };
+
+  const setRelContacts = () => {
+    dispatch({
+      type: "SET_RELATION_CONTACT",
+    });
+  };
+
+  // filter conatcts actions
+
+  const filterPersonal = async (resposne) => {
+    if (!resposne) {
+      await setContacts();
+    }
+    dispatch({
+      type: "SET_FILTER_CONTACT-1",
+    });
+  };
+  const filterProfessional = async (resposne) => {
+    if (!resposne) {
+      await setContacts();
+    }
+    dispatch({
+      type: "SET_FILTER_CONTACT-2",
+    });
+  };
+
   return (
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
         updateContactState: state.updateContactState,
+        relation: state.relation,
         setContacts,
         createContact,
         updateCoantact,
         deleteConatact,
         updateConatctSetter,
         updateCoantactRemover,
+        filterPersonal,
+        filterProfessional,
       }}
     >
       {children}

@@ -14,6 +14,34 @@ const reducer = (state, action) => {
     case "REMOVE_UPDATE_CONTACT":
       return { ...state, updateContactState: null };
 
+    case "SET_RELATION_CONTACT":
+      const professionalContacts = state.contacts.filter(
+        (d) => d.relation === "professional"
+      );
+      const personalContacts = state.contacts.filter(
+        (d) => d.relation === "personal"
+      );
+      return {
+        ...state,
+        relation: {
+          personal: personalContacts,
+          professional: professionalContacts,
+        },
+      };
+    case "SET_FILTER_CONTACT-1":
+      localStorage.setItem("filter", "personal");
+      const personalContactsFiltered = state.contacts.filter(
+        (d) => d.relation === "personal"
+      );
+      return { ...state, contacts: personalContactsFiltered };
+
+    case "SET_FILTER_CONTACT-2":
+      localStorage.setItem("filter", "professional");
+      const professionalContactsFiltered = state.contacts.filter(
+        (d) => d.relation === "professional"
+      );
+      return { ...state, contacts: professionalContactsFiltered };
+
     default:
       return state;
   }

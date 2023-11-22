@@ -1,11 +1,13 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useContact } from "../context/contactContext/state";
+import { createContactValidation } from "../utils/Schema";
 import { inputData } from "../utils/constant";
 
 const Modal = () => {
   const [open, setOpen] = useState(false);
-  const { updateContactState, updateCoantact ,updateCoantactRemover } = useContact();
+  const { updateContactState, updateCoantact, updateCoantactRemover } =
+    useContact();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
@@ -15,17 +17,20 @@ const Modal = () => {
         email: "",
         relation: "",
       },
-      onSubmit: (values, action) => {
+      validationSchema: createContactValidation,
+      onSubmit: async (values, action) => {
         console.log(values);
-        updateCoantact(values, updateContactState._id);
-        setOpen(false);
-        action.resetForm();
+        const success = await updateCoantact(values, updateContactState._id);
+        if (success) {
+          setOpen(false);
+          action.resetForm();
+        }
       },
     });
-    const modalCloseHandler = ()=>{
-      setOpen(false)
-      updateCoantactRemover()
-    }
+  const modalCloseHandler = () => {
+    setOpen(false);
+    updateCoantactRemover();
+  };
 
   useEffect(() => {
     updateContactState && setOpen(true);
@@ -100,6 +105,13 @@ const Modal = () => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                           // placeholder="name@company.com"
                         />
+                        {touched[inp.name] && errors[inp.name] ? (
+                          <small className="text-red-600">
+                            {errors[inp.name]}
+                          </small>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     );
                   })}
